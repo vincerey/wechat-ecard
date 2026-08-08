@@ -60,7 +60,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(18, 12, 48, 0.10) 0%, rgba(18, 12, 48, 0.18) 45%, rgba(18, 12, 48, 0.55) 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.30) 0%, rgba(255, 255, 255, 0.0) 28%, rgba(255, 255, 255, 0.0) 72%, rgba(255, 255, 255, 0.25) 100%);
   pointer-events: none;
 }
 
@@ -72,7 +72,8 @@ body {
 
 .star {
   position: absolute;
-  background: #fff;
+  background: #f2a63d;
+  box-shadow: 0 0 6px rgba(242, 166, 61, 0.9);
   border-radius: 50%;
   animation: twinkle var(--tw, 2.6s) ease-in-out infinite alternate;
   animation-delay: var(--td, 0s);
@@ -152,11 +153,11 @@ body {
   font-size: clamp(46px, 13vw, 78px);
   font-weight: 800;
   letter-spacing: 0.08em;
-  background: linear-gradient(120deg, #fff4d6 0%, #ffd3e0 45%, #ffe9b0 100%);
+  background: linear-gradient(120deg, #3b2f7a 0%, #c9417f 55%, #e05a3c 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 4px 16px rgba(20, 10, 50, 0.55));
+  filter: drop-shadow(0 2px 10px rgba(255, 255, 255, 0.9));
   animation: titleFloat 3.4s ease-in-out infinite;
 }
 
@@ -165,17 +166,17 @@ body {
   font-size: clamp(18px, 5vw, 26px);
   font-weight: 700;
   letter-spacing: 0.22em;
-  color: var(--gold);
-  text-shadow: 0 2px 10px rgba(20, 10, 50, 0.6);
+  color: #b8860b;
+  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.9);
   white-space: nowrap;
 }
 
 .cover-sub {
   font-size: clamp(13px, 3.6vw, 16px);
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(74, 58, 108, 0.94);
   line-height: 1.8;
   letter-spacing: 0.06em;
-  text-shadow: 0 1px 8px rgba(20, 10, 50, 0.5);
+  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.9);
 }
 
 @keyframes fadeDown {
@@ -187,7 +188,7 @@ body {
   font-size: clamp(26px, 7vw, 40px);
   letter-spacing: 0.35em;
   margin-bottom: 14px;
-  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 2px 12px rgba(255, 255, 255, 0.9);
   animation: breathe 3s ease-in-out infinite;
 }
 
@@ -238,7 +239,7 @@ body {
   text-align: center;
   font-size: 13px;
   letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(74, 58, 108, 0.62);
   animation: hintPulse 2s ease-in-out infinite;
 }
 
