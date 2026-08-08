@@ -38,23 +38,23 @@ MELODY = [
 BASS_LINES = [
     ("C3", 6.0), ("G2", 6.0), ("C3", 7.0), ("F2", 6.0),
 ]
-BEAT = 0.6          # 每拍秒数（约 100 BPM）
+BEAT = 0.42         # 每拍秒数（约 143 BPM，轻快版）
 LOOPS = 2
 
 
 def note_tone(freq, dur, amp=0.5):
-    """音乐盒音色：基频 + 泛音，指数衰减包络。"""
+    """轻快音乐盒音色：基频 + 明亮泛音，快速衰减。"""
     n = int(SAMPLE_RATE * dur)
     samples = []
-    decay = 6.0 / dur
+    decay = 8.5 / dur
     for i in range(n):
         t = i / SAMPLE_RATE
         env = math.exp(-decay * t)
         vib = 1.0 + 0.003 * math.sin(2 * math.pi * 5.2 * t)
         s = (
             math.sin(2 * math.pi * freq * vib * t)
-            + 0.32 * math.sin(2 * math.pi * freq * 2 * vib * t)
-            + 0.10 * math.sin(2 * math.pi * freq * 3 * vib * t)
+            + 0.42 * math.sin(2 * math.pi * freq * 2 * vib * t)
+            + 0.16 * math.sin(2 * math.pi * freq * 3 * vib * t)
         )
         samples.append(amp * env * s)
     return samples

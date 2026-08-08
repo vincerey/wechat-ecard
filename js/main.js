@@ -113,25 +113,32 @@
   }
 
   /* ---------- 音乐 ---------- */
-  function toggleMusic(forcePlay) {
-    if (bgm.paused || !musicOn) {
-      bgm.volume = 0.55;
-      bgm.play().then(function () {
-        musicOn = true;
-        musicBtn.textContent = "⏸ 暂停音乐";
-        musicBtn.setAttribute("aria-pressed", "true");
-      }).catch(function () {
-        musicOn = false;
-        musicBtn.textContent = "🎵 播放音乐";
-        musicBtn.setAttribute("aria-pressed", "false");
-      });
+  function updateMusicBtn(playing) {
+    musicOn = playing;
+    musicBtn.textContent = playing ? "⏸ 暂停音乐" : "🎵 播放音乐";
+    musicBtn.setAttribute("aria-pressed", playing ? "true" : "false");
+  }
+
+  function playMusic() {
+    bgm.volume = 0.55;
+    bgm.play().then(function () {
+      updateMusicBtn(true);
+    }).catch(function () {
+      updateMusicBtn(false);
+    });
+  }
+
+  function stopMusic() {
+    bgm.pause();
+    updateMusicBtn(false);
+  }
+
+  function toggleMusic() {
+    if (musicOn) {
+      stopMusic();
     } else {
-      bgm.pause();
-      musicOn = false;
-      musicBtn.textContent = "🎵 播放音乐";
-      musicBtn.setAttribute("aria-pressed", "false");
+      playMusic();
     }
-    void forcePlay;
   }
 
   /* ---------- 开卡 / 重开 ---------- */
@@ -142,7 +149,7 @@
     body.classList.add("open");
     inner.setAttribute("aria-hidden", "false");
     burstConfetti(64);
-    toggleMusic(true);
+    playMusic();
     setTimeout(function () { opening = false; }, 950);
   }
 
@@ -150,19 +157,21 @@
     body.classList.remove("open");
     body.classList.add("replay");
     inner.setAttribute("aria-hidden", "true");
-    if (musicOn) {
-      bgm.pause();
-      musicOn = false;
-      musicBtn.textContent = "🎵 播放音乐";
-      musicBtn.setAttribute("aria-pressed", "false");
-    }
     setTimeout(function () { body.classList.remove("replay"); }, 1000);
   }
 
   openBtn.addEventListener("click", openCard);
   cover.addEventListener("click", openCard);
   replayBtn.addEventListener("click", replay);
-  musicBtn.addEventListener("click", function () { toggleMusic(false); });
+  musicBtn.addEventListener("click", toggleMusic);
+
+  /* 进链接即尝试自动播放；微信需手势，首次触摸时兜底启动 */
+  function firstInteraction() {
+    if (!musicOn) playMusic();
+  }
+  window.addEventListener("load", playMusic);
+  document.addEventListener("touchstart", firstInteraction, { once: true, passive: true });
+  document.addEventListener("click", firstInteraction, { once: true });
 
   /* 键盘可达性 */
   document.addEventListener("keydown", function (e) {

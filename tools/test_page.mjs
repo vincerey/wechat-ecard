@@ -60,6 +60,8 @@ const innerInfo = await page.evaluate(() => {
     bodyOpen: document.body.classList.contains("open"),
     innerVisible: getComputedStyle(document.getElementById("inner")).visibility,
     cardText: document.querySelector(".message").innerText.replace(/\s+/g, " "),
+    cardBg: getComputedStyle(document.querySelector(".inner-card")).backgroundColor,
+    badgeBg: getComputedStyle(document.querySelector(".badge")).backgroundColor,
     musicText: document.getElementById("musicBtn").textContent,
     audioReady: audio.readyState,
     audioTime: audio.currentTime.toFixed(2),
