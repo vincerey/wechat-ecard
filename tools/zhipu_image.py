@@ -15,7 +15,7 @@ import urllib.request
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ASSETS = os.path.join(ROOT, "assets")
 API_URL = "https://open.bigmodel.cn/api/paas/v4/images/generations"
-MODEL = "cogview-3-flash"          # 免费模型
+MODEL = os.environ.get("ZHIPU_MODEL", "cogview-3-flash")  # 可用 cogview-4-250304（付费）
 SIZE = "720x1440"                  # 手机竖屏
 
 PROMPTS = {
@@ -53,7 +53,13 @@ def get_key():
 
 
 def generate_one(key, filename, prompt, retries=2):
-    body = json.dumps({"model": MODEL, "prompt": prompt, "size": SIZE}).encode("utf-8")
+    body = json.dumps({
+        "model": MODEL,
+        "prompt": prompt,
+        "size": SIZE,
+        "watermark": False,  # 关闭 CogView 自动水印
+        "watermark_enabled": False,
+    }).encode("utf-8")
     req = urllib.request.Request(
         API_URL,
         data=body,

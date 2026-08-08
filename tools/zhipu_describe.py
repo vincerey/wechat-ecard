@@ -25,7 +25,7 @@ def describe(image_path):
     with open(image_path, "rb") as f:
         b64 = base64.b64encode(f.read()).decode("ascii")
     data_url = "data:image/png;base64," + b64
-    prompt = (
+    prompt = sys.argv[2] if len(sys.argv) > 2 else (
         "请用中文详细描述这张图片，我将根据你的描述用 AI 重新生成同风格的图片。"
         "请说明：1) 画面内容（人物/物体/场景）；2) 艺术风格（如水彩、扁平插画、"
         "手绘线稿、儿童绘本、治愈系等）；3) 配色与色调；4) 线条与笔触特点；"

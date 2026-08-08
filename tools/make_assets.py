@@ -43,20 +43,25 @@ LOOPS = 2
 
 
 def note_tone(freq, dur, amp=0.5):
-    """轻快音乐盒音色：基频 + 明亮泛音，快速衰减。"""
+    """轻快钢琴音色：快速起音 + 延音衰减 + 泛音，带一点踏板回声。"""
     n = int(SAMPLE_RATE * dur)
+    attack = int(SAMPLE_RATE * 0.004)
+    delay = int(SAMPLE_RATE * 0.16)
+    decay = 3.2 / dur
     samples = []
-    decay = 8.5 / dur
     for i in range(n):
         t = i / SAMPLE_RATE
-        env = math.exp(-decay * t)
-        vib = 1.0 + 0.003 * math.sin(2 * math.pi * 5.2 * t)
+        env = min(1.0, i / max(attack, 1)) * math.exp(-decay * t)
         s = (
-            math.sin(2 * math.pi * freq * vib * t)
-            + 0.42 * math.sin(2 * math.pi * freq * 2 * vib * t)
-            + 0.16 * math.sin(2 * math.pi * freq * 3 * vib * t)
+            math.sin(2 * math.pi * freq * t)
+            + 0.45 * math.sin(2 * math.pi * freq * 2 * t)
+            + 0.18 * math.sin(2 * math.pi * freq * 3 * t)
+            + 0.08 * math.sin(2 * math.pi * freq * 4 * t)
         )
         samples.append(amp * env * s)
+    # 简单的房间回声，模拟钢琴踏板
+    for i in range(n - delay):
+        samples[i + delay] += samples[i] * 0.16
     return samples
 
 

@@ -170,6 +170,11 @@
     if (!musicOn) playMusic();
   }
   window.addEventListener("load", playMusic);
+  // 微信内置浏览器：桥接就绪后尝试播放
+  document.addEventListener("WeixinJSBridgeReady", playMusic, false);
+  if (window.WeixinJSBridge && typeof window.WeixinJSBridge.invoke === "function") {
+    playMusic();
+  }
   document.addEventListener("touchstart", firstInteraction, { once: true, passive: true });
   document.addEventListener("click", firstInteraction, { once: true });
 
