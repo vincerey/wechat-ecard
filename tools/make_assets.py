@@ -17,24 +17,28 @@ ASSETS = os.path.join(ROOT, "assets")
 os.makedirs(ASSETS, exist_ok=True)
 
 
-# ---------------------------------------------------------------- 音乐
+# ---------------------------------------------------------------- 音乐（生日快乐歌）
 SAMPLE_RATE = 22050
 NOTE = {
     "F2": 87.31, "G2": 98.00, "A2": 110.00, "C3": 130.81, "F3": 174.61, "G3": 196.00,
     "A3": 220.00, "B3": 246.94, "C4": 261.63, "D4": 293.66,
     "E4": 329.63, "F4": 349.23, "G4": 392.00, "A4": 440.00,
-    "C5": 523.25, "D5": 587.33, "E5": 659.25, "G5": 783.99,
+    "B4": 493.88, "C5": 523.25, "D5": 587.33, "E5": 659.25,
+    "F5": 698.46, "G5": 783.99,
 }
 
-# 每小节：低音 + 琶音
-CHORDS = [
-    ("C3", ["C4", "E4", "G4", "C5", "G4", "E4"]),
-    ("A2", ["A3", "C4", "E4", "A4", "E4", "C4"]),
-    ("F2", ["F3", "A3", "C4", "F4", "C4", "A3"]),
-    ("G2", ["G3", "B3", "D4", "G4", "D4", "B3"]),
+# 生日快乐歌旋律：(音名, 拍数)
+MELODY = [
+    ("G4", 0.75), ("G4", 0.25), ("A4", 1.0), ("G4", 1.0), ("C5", 1.0), ("B4", 2.0),
+    ("G4", 0.75), ("G4", 0.25), ("A4", 1.0), ("G4", 1.0), ("D5", 1.0), ("C5", 2.0),
+    ("G4", 0.75), ("G4", 0.25), ("G5", 1.0), ("E5", 1.0), ("C5", 1.0), ("B4", 1.0), ("A4", 2.0),
+    ("F5", 0.75), ("F5", 0.25), ("E5", 1.0), ("C5", 1.0), ("D5", 1.0), ("C5", 2.0),
 ]
-BAR_SECONDS = 2.4
-NOTE_SECONDS = BAR_SECONDS / 6
+# 每句低音（C / G / C / F），柔和伴奏
+BASS_LINES = [
+    ("C3", 6.0), ("G2", 6.0), ("C3", 7.0), ("F2", 6.0),
+]
+BEAT = 0.6          # 每拍秒数（约 100 BPM）
 LOOPS = 2
 
 
@@ -56,7 +60,7 @@ def note_tone(freq, dur, amp=0.5):
     return samples
 
 
-def bass_tone(freq, dur, amp=0.10):
+def bass_tone(freq, dur, amp=0.08):
     n = int(SAMPLE_RATE * dur)
     fade = int(SAMPLE_RATE * 0.12)
     out = []
@@ -73,26 +77,32 @@ def bass_tone(freq, dur, amp=0.10):
 
 
 def build_music():
-    total = int(SAMPLE_RATE * BAR_SECONDS * len(CHORDS) * LOOPS)
+    total_beats = sum(b for _, b in MELODY)
+    total = int(SAMPLE_RATE * total_beats * BEAT * LOOPS)
     mix = [0.0] * total
-    base = 0
     for _ in range(LOOPS):
-        for bass, arpeggio in CHORDS:
-            # 低音
-            b = bass_tone(NOTE[bass], BAR_SECONDS + 0.4)
-            for i, v in enumerate(b):
-                pos = base + i
+        base = 0
+        for note, beats in MELODY:
+            dur = beats * BEAT
+            tone = note_tone(NOTE[note], dur * 1.6, amp=0.46)
+            start = base
+            for i, v in enumerate(tone):
+                pos = start + i
                 if pos < total:
                     mix[pos] += v
-            # 琶音
-            for j, note in enumerate(arpeggio):
-                start = base + int(j * NOTE_SECONDS * SAMPLE_RATE)
-                tone = note_tone(NOTE[note], NOTE_SECONDS * 1.7, amp=0.42)
-                for i, v in enumerate(tone):
-                    pos = start + i
-                    if pos < total:
-                        mix[pos] += v
-            base += int(BAR_SECONDS * SAMPLE_RATE)
+            base += int(dur * SAMPLE_RATE)
+        # 低音按句子铺底
+        line_beats = [6.0, 6.0, 7.0, 6.0]
+        pos = 0
+        for (bass, _), beats in zip(BASS_LINES, line_beats):
+            dur = beats * BEAT
+            b = bass_tone(NOTE[bass], dur + 0.3)
+            start = pos
+            for i, v in enumerate(b):
+                idx = start + i
+                if idx < total:
+                    mix[idx] += v
+            pos += int(dur * SAMPLE_RATE)
 
     # 无缝循环：首尾淡入淡出
     fade = int(SAMPLE_RATE * 0.9)

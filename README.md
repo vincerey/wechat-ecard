@@ -2,8 +2,8 @@
 
 纯静态、零依赖的电子贺卡，可在微信里直接点开链接浏览。两层结构：
 
-1. **封面层**：星空 + 月亮 + 漂浮爱心 +「生日快乐 · 七夕快乐」主题，轻触任意位置打开。
-2. **内页层**：暖色渐变背景 + 闪烁星光 + 祝福卡片 + 彩带绽放 + 背景音乐（音乐盒风格）。
+1. **封面层**：小王子插画风格背景（拿着玫瑰的小王子）+「生日快乐 · 七夕快乐」主题，轻触任意位置打开。
+2. **内页层**：星座风格背景（可爱小狮子 + 生日蛋糕）+ 闪烁星光 + 祝福卡片 + 彩带绽放 + 背景音乐（生日快乐歌）。
 
 ## 文件结构
 
@@ -13,10 +13,13 @@ wechat-ecard/
 ├── css/style.css       # 全部样式与动画
 ├── js/main.js          # 开卡 / 重开 / 音乐 / 彩带 / URL 参数
 ├── assets/
-│   ├── music.wav       # 背景音乐（自动生成）
+│   ├── music.wav       # 背景音乐（自动生成，生日快乐歌）
+│   ├── cover.png       # 封面背景插画（小王子拿着玫瑰）
+│   ├── inner.png       # 内页背景插画（星座风小狮子 + 蛋糕）
 │   └── preview.png     # 微信/网页分享预览图
 ├── tools/
 │   ├── make_assets.py  # 重新生成音乐和预览图
+│   ├── zhipu_image.py  # 用智谱 CogView 生成插画背景（需 ZHIPU_API_KEY）
 │   └── test_page.mjs   # 本地自动化测试脚本
 └── README.md
 ```
@@ -36,7 +39,7 @@ https://你的用户名.github.io/wechat-ecard/?name=小美
 支持 `name` 和 `to` 两个参数。
 
 ### 背景音乐
-`tools/make_assets.py` 中 `CHORDS` 是和弦进行，`NOTE` 是音名频率表。修改后运行：
+`tools/make_assets.py` 中 `MELODY` 是生日快乐歌的旋律（音名 + 拍数），`NOTE` 是音名频率表。修改后运行：
 
 ```powershell
 python tools/make_assets.py
