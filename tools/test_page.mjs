@@ -14,14 +14,18 @@ const OUT = path.join(ROOT, "tools", "shots");
 fs.mkdirSync(OUT, { recursive: true });
 
 const EDGE = "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe";
+const CHROME = "C:/Program Files/Google/Chrome/Application/chrome.exe";
+const BROWSER_PATH = process.env.TEST_BROWSER || EDGE;
 const BASE = process.env.TEST_URL || "http://127.0.0.1:8000/";
+const PROXY = process.env.TEST_PROXY;
 
-const browser = await chromium.launch({ executablePath: EDGE, headless: true });
+const browser = await chromium.launch({ executablePath: BROWSER_PATH, headless: true });
 const ctx = await browser.newContext({
   viewport: { width: 390, height: 844 },
   deviceScaleFactor: 2,
   isMobile: true,
   hasTouch: true,
+  ...(PROXY ? { proxy: { server: PROXY } } : {}),
 });
 const page = await ctx.newPage();
 
