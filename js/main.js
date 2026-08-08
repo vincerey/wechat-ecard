@@ -7,6 +7,7 @@
   const openBtn = document.getElementById("openBtn");
   const replayBtn = document.getElementById("replayBtn");
   const musicBtn = document.getElementById("musicBtn");
+  const coverMusicBtn = document.getElementById("coverMusicBtn");
   const bgm = document.getElementById("bgm");
   const nameEl = document.getElementById("name");
 
@@ -123,14 +124,17 @@
     bgm.volume = 0.55;
     bgm.play().then(function () {
       updateMusicBtn(true);
+      coverMusicBtn.textContent = "⏸";
     }).catch(function () {
       updateMusicBtn(false);
+      coverMusicBtn.textContent = "🎵";
     });
   }
 
   function stopMusic() {
     bgm.pause();
     updateMusicBtn(false);
+    coverMusicBtn.textContent = "🎵";
   }
 
   function toggleMusic() {
@@ -162,6 +166,10 @@
 
   openBtn.addEventListener("click", openCard);
   cover.addEventListener("click", openCard);
+  coverMusicBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    toggleMusic();
+  });
   replayBtn.addEventListener("click", replay);
   musicBtn.addEventListener("click", toggleMusic);
 

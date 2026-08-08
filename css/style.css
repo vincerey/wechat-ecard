@@ -149,6 +149,26 @@ body {
   margin-top: 6vh;
 }
 
+.cover-music-btn {
+  position: absolute;
+  top: max(18px, env(safe-area-inset-top));
+  right: 18px;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid rgba(74, 58, 108, 0.35);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.72);
+  color: #7a4a8f;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(80, 50, 110, 0.18);
+}
+
+.cover-music-btn:active {
+  transform: scale(0.92);
+}
+
 .cover-title {
   font-size: clamp(46px, 13vw, 78px);
   font-weight: 800;
