@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#2d1b69">
+  <title>生日快乐 · 七夕快乐</title>
+  <meta name="description" content="一份为你准备的生日与七夕祝福，轻触打开。">
+  <meta property="og:title" content="生日快乐 · 七夕快乐">
+  <meta property="og:description" content="一份为你准备的生日与七夕祝福，轻触打开。">
+  <meta property="og:image" content="assets/preview.png">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%92%8C%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- 第一层：封面（生日 & 七夕主题） -->
+  <section id="cover" class="layer cover" aria-label="贺卡封面">
+    <div id="stars" class="stars" aria-hidden="true"></div>
+    <div id="coverHearts" class="floaters" aria-hidden="true"></div>
+    <div class="moon" aria-hidden="true"></div>
+
+    <div class="cover-content">
+      <p class="cover-emoji">🎂  ❤  🌙</p>
+      <h1 class="cover-title">生日快乐</h1>
+      <div class="cover-divider"><span>✦</span> 七夕快乐 <span>✦</span></div>
+      <p class="cover-sub">把最好的祝福，装进这封小小的贺卡</p>
+      <button id="openBtn" class="open-btn" type="button">打开贺卡 💌</button>
+    </div>
+
+    <p class="tap-hint">轻触屏幕任意位置开启</p>
+  </section>
+
+  <!-- 第二层：祝福内容 -->
+  <section id="inner" class="layer inner" aria-label="贺卡内容" aria-hidden="true">
+    <div class="inner-bg" aria-hidden="true"></div>
+    <div id="sparkles" class="sparkles" aria-hidden="true"></div>
+    <div id="innerHearts" class="floaters floaters-inner" aria-hidden="true"></div>
+
+    <div class="inner-card">
+      <div class="badge">🎂 生日 · 七夕 🎋</div>
+      <div class="card-body">
+        <p class="greeting">亲爱的 <span id="name" class="name">你</span>：</p>
+        <p class="message">
+          生日快乐，也七夕快乐呀。<br>
+          愿新的一岁，眼里有光、心中有爱，<br>
+          所有的美好都如期而至，<br>
+          所有的浪漫都恰好是你。
+        </p>
+        <p class="sign">—— 永远祝福你的人</p>
+      </div>
+      <div class="card-footer">
+        <button id="musicBtn" class="round-btn" type="button" aria-pressed="false">🎵 播放音乐</button>
+        <button id="replayBtn" class="round-btn ghost" type="button">↺ 再看一遍</button>
+      </div>
+    </div>
+
+    <p class="footer-note">长按可收藏 · 分享给重要的人</p>
+  </section>
+
+  <audio id="bgm" src="assets/music.wav" loop preload="none"></audio>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
