@@ -125,9 +125,11 @@
     bgm.play().then(function () {
       updateMusicBtn(true);
       coverMusicBtn.textContent = "⏸";
+      coverMusicBtn.classList.remove("needs-tap");
     }).catch(function () {
       updateMusicBtn(false);
       coverMusicBtn.textContent = "🎵";
+      coverMusicBtn.classList.add("needs-tap");
     });
   }
 
@@ -177,14 +179,29 @@
   function firstInteraction() {
     if (!musicOn) playMusic();
   }
-  window.addEventListener("load", playMusic);
-  // 微信内置浏览器：桥接就绪后尝试播放
-  document.addEventListener("WeixinJSBridgeReady", playMusic, false);
-  if (window.WeixinJSBridge && typeof window.WeixinJSBridge.invoke === "function") {
-    playMusic();
+  function autoplayAttempts() {
+    // 多次尝试：等待资源加载完成/微信桥接就绪
+    const delays = [0, 300, 800, 1500, 3000];
+    delays.forEach(function (d) {
+      setTimeout(function () {
+        if (!musicOn) playMusic();
+      }, d);
+    });
   }
+  // 微信内置浏览器：桥接就绪后播放（若桥接已就绪则直接播放）
+  if (window.WeixinJSBridge && typeof window.WeixinJSBridge.invoke === "function") {
+    autoplayAttempts();
+  } else {
+    document.addEventListener("WeixinJSBridgeReady", function () {
+      autoplayAttempts();
+      playMusic();
+    }, false);
+  }
+  window.addEventListener("load", autoplayAttempts);
   document.addEventListener("touchstart", firstInteraction, { once: true, passive: true });
   document.addEventListener("click", firstInteraction, { once: true });
+  // 封面音乐按钮初始提示态
+  coverMusicBtn.classList.add("needs-tap");
 
   /* 键盘可达性 */
   document.addEventListener("keydown", function (e) {

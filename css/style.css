@@ -169,6 +169,15 @@ body {
   transform: scale(0.92);
 }
 
+.cover-music-btn.needs-tap {
+  animation: musicPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes musicPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 122, 168, 0.55); }
+  50%      { transform: scale(1.08); box-shadow: 0 0 0 12px rgba(255, 122, 168, 0); }
+}
+
 .cover-title {
   font-size: clamp(46px, 13vw, 78px);
   font-weight: 800;
